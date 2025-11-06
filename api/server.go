@@ -4,20 +4,29 @@ import (
 	"log/slog"
 	"net/http"
 	"time"
+
+	"github.com/voblako/TheFlowWork/storage"
 )
 
 type Config struct {
 	ListenAddr string
+	Storage storage.Config
 }
 
 type Server struct {
 	*Config
 	Started time.Time
+	DB storage.DB
 }
 
 func NewServer(config Config) (*Server, error) {
+	db, err := storage.NewPostgressConnect(config.Storage)
+	if err!=nil{
+		return &Server{}, err
+	}
 	return &Server{
 		Config: &config,
+		DB: db,
 	}, nil
 }
 
