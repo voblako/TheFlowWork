@@ -1,0 +1,6 @@
+#env variables if exists
+.env
+#For JetBrain`s IDEs
+.idea
+#Mac
+.DS_Store
