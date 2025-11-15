@@ -2,7 +2,7 @@ Create table IF NOT EXISTS machines (
     id serial PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
-    media jsonbB DEFAULT '[]'::jsonb,
+    media jsonb DEFAULT '[]'::jsonb,
     created_at TIMESTAMP,
 )
 
@@ -18,10 +18,9 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP
 );
 
-CREATE INDEX IF NOT EXISTS idx_users_username ON users (username);
-
 Create table if not exists flows (
     id serial PRIMARY KEY,
+    startdate TIMESTAMP,
     problemname VARCHAR(255) NOT NULL,
     steps jsonb DEFAULT '[]'::jsonb,
     report TEXT,
