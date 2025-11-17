@@ -8,6 +8,8 @@ import (
 
 type Config struct {
 	DatabaseURL string
+	//CacheURL
+	//StorageURL
 }
 
 type DB struct {

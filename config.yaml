@@ -1,10 +1,10 @@
 #порт для запуска приложения
-port: "8080"
+port: "3000"
 
 #структура для составления строки бд
 database:
   port: "5432"
-  domain: "postrges"
+  domain: "localhost"
   user: "main"
   password: "qwerty"
   dbname: "flowwork"

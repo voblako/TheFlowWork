@@ -19,7 +19,7 @@ type Database struct {
 func MustLoadConf() Config {
 	var config Config
 
-	if err := cleanenv.ReadConfig("config/config.yaml", &config); err != nil {
+	if err := cleanenv.ReadConfig("./config.yaml", &config); err != nil {
 		panic(err)
 	}
 	return config

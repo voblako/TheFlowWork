@@ -38,7 +38,8 @@ func NewServer(config config.Config) (Server, error) {
 }
 
 func (s *Server) Start() {
-	HealthHandler := handlers.NewHealthHandler(s.DB, time.Now())
+	s.Started = time.Now().UTC()
+	HealthHandler := handlers.NewHealthHandler(s.DB, s.Started)
 
 	mux := http.NewServeMux()
 
@@ -49,7 +50,7 @@ func (s *Server) Start() {
 		Handler: mux,
 	}
 
-	s.Started = time.Now().UTC()
+	
 	slog.Info("api is running", "address", fmt.Sprintf(":%s", s.Config.Port))
 	err := server.ListenAndServe()
 	if err != nil {
