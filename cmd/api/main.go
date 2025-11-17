@@ -3,16 +3,19 @@ package main
 import (
 	"log"
 
-	config2 "github.com/voblako/TheFlowWork/internal/config"
-	"github.com/voblako/TheFlowWork/internal/http-server"
+	"github.com/voblako/TheFlowWork/api"
+	"github.com/voblako/TheFlowWork/storage"
 )
 
-
 func main() {
-
-	conf := config2.MustLoadConf()
-
-	server, err := http_server.NewServer(conf)
+	config := api.Config{
+		ListenAddr: ":3000",
+		Storage: storage.Config{
+			//"postgres://username:password@localhost:5432/database_name"
+			DatabaseURL: "postgres://main:qwerty@localhost:5432/flowwork",
+		},
+	}
+	server, err := api.NewServer(config)
 	if err != nil {
 		log.Fatalln(err)
 	}
