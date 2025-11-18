@@ -1,4 +1,4 @@
-package http_server
+package api
 
 import (
 	"fmt"
@@ -6,8 +6,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/voblako/TheFlowWork/internal/api/handlers"
+	"github.com/voblako/TheFlowWork/internal/api/middlewares"
 	"github.com/voblako/TheFlowWork/internal/config"
-	"github.com/voblako/TheFlowWork/internal/http-server/handlers"
 	"github.com/voblako/TheFlowWork/storage"
 )
 
@@ -45,9 +46,11 @@ func (s *Server) Start() {
 
 	mux.HandleFunc("GET /health", HealthHandler.Health)
 
+	wrappedMux := middlewares.NewLogger(mux)
+
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%s", s.Config.Port),
-		Handler: mux,
+		Handler: wrappedMux,
 	}
 
 	

@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/voblako/TheFlowWork/internal/entities"
+	"github.com/voblako/TheFlowWork/internal/models"
 	"github.com/voblako/TheFlowWork/storage"
 )
 
@@ -26,7 +26,7 @@ func (h *HealthHandler) Health(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	jsonResp, err := json.Marshal(entities.Health{
+	jsonResp, err := json.Marshal(models.Health{
 		Status:       "Ok",
 		CurrentTime:  time.Now().UTC().String(),
 		Uptime:       time.Since(h.Started).String(),
