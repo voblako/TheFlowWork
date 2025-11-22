@@ -1,4 +1,4 @@
-Create table IF NOT EXISTS machines (
+Create table IF NOT EXISTS company.machines (
     id serial PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -6,21 +6,21 @@ Create table IF NOT EXISTS machines (
     created_at TIMESTAMP,
 )
 
-CREATE INDEX IF NOT EXISTS idx_machines_name ON machines (name);
+CREATE INDEX IF NOT EXISTS idx_machines_name ON company.machines (name);
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS app.users (
     id serial PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     surname VARCHAR(255) NOT NULL,
     third_name VARCHAR(255),
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP
+    birthdate DATE
 );
 
-CREATE INDEX IF NOT EXISTS idx_users_email ON users (email);
+CREATE INDEX IF NOT EXISTS idx_users_email ON app.users (email);
 
-CREATE IF NOT EXISTS TABLE problems (
+CREATE IF NOT EXISTS TABLE company.problems (
     id serial PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -28,7 +28,7 @@ CREATE IF NOT EXISTS TABLE problems (
     created_at TIMESTAMP
 )
 
-Create table if not exists flows (
+Create table if not exists company.flows (
     id serial PRIMARY KEY,
     startdate TIMESTAMP,
     problem_id INT REFERENCES problems(id),
