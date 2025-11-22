@@ -1,4 +1,4 @@
-Create table IF NOT EXISTS company.machines (
+Create table IF NOT EXISTS company.assets (
     id serial PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -6,7 +6,7 @@ Create table IF NOT EXISTS company.machines (
     created_at TIMESTAMP,
 )
 
-CREATE INDEX IF NOT EXISTS idx_machines_name ON company.machines (name);
+CREATE INDEX IF NOT EXISTS idx_assets_name ON company.assets (name);
 
 CREATE TABLE IF NOT EXISTS app.users (
     id serial PRIMARY KEY,
@@ -24,6 +24,7 @@ CREATE IF NOT EXISTS TABLE company.problems (
     id serial PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
+    status TEXT,
     priority_level INT,
     created_at TIMESTAMP
 )
@@ -31,8 +32,8 @@ CREATE IF NOT EXISTS TABLE company.problems (
 Create table if not exists company.flows (
     id serial PRIMARY KEY,
     startdate TIMESTAMP,
-    problem_id INT REFERENCES problems(id),
-    machine_id INT REFERENCES machines(id),
+    problem_id INT REFERENCES company.problems(id),
+    asset_id INT REFERENCES company.asset(id),
     user_id INT REFERENCES users(id),
     desision_steps jsonb,
     created_at TIMESTAMP,
