@@ -1,4 +1,4 @@
-Create table IF NOT EXISTS company.machines (
+Create table IF NOT EXISTS company.assets (
     id serial PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -6,7 +6,7 @@ Create table IF NOT EXISTS company.machines (
     created_at TIMESTAMP,
 )
 
-CREATE INDEX IF NOT EXISTS idx_machines_name ON company.machines (name);
+CREATE INDEX IF NOT EXISTS idx_assets_name ON company.assets (name);
 
 CREATE TABLE IF NOT EXISTS app.users (
     id serial PRIMARY KEY,
