@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"log"
 	"log/slog"
 	"net/http"
 	"time"
@@ -39,12 +40,19 @@ func NewServer(config config.Config) (Server, error) {
 }
 
 func (s *Server) Start() {
+	_, err := s.DB.Init()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	s.Started = time.Now().UTC()
 	HealthHandler := handlers.NewHealthHandler(s.DB, s.Started)
+	CreateUserHandler := handlers.NewCreateUserHandler(s.DB)
 
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /health", HealthHandler.Health)
+	mux.HandleFunc("POST /user", CreateUserHandler.CreateUser)
 
 	wrappedMux := middlewares.NewLogger(mux)
 
@@ -53,9 +61,8 @@ func (s *Server) Start() {
 		Handler: wrappedMux,
 	}
 
-	
 	slog.Info("api is running", "address", fmt.Sprintf(":%s", s.Config.Port))
-	err := server.ListenAndServe()
+	err = server.ListenAndServe()
 	if err != nil {
 		slog.Error("API stopped", "error", err)
 	}
