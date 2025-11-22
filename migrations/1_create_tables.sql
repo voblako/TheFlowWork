@@ -24,6 +24,7 @@ CREATE IF NOT EXISTS TABLE company.problems (
     id serial PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
+    status TEXT,
     priority_level INT,
     created_at TIMESTAMP
 )
@@ -31,8 +32,8 @@ CREATE IF NOT EXISTS TABLE company.problems (
 Create table if not exists company.flows (
     id serial PRIMARY KEY,
     startdate TIMESTAMP,
-    problem_id INT REFERENCES problems(id),
-    machine_id INT REFERENCES machines(id),
+    problem_id INT REFERENCES company.problems(id),
+    asset_id INT REFERENCES company.asset(id),
     user_id INT REFERENCES users(id),
     desision_steps jsonb,
     created_at TIMESTAMP,
