@@ -22,3 +22,19 @@ func DateToTime(date string) (time.Time, error) {
 	}
 	return time.Date(year, time.Month(monthInt), day, 0, 0, 0, 0, time.Local), nil
 }
+
+func TimeToDate(t time.Time) string {
+	day := t.Day()
+	month := int(t.Month())
+	year := t.Year()
+	dayStr := strconv.Itoa(day)
+	monthStr := strconv.Itoa(month)
+	yearStr := strconv.Itoa(year)
+	if day < 10 {
+		dayStr = "0" + dayStr
+	}
+	if month < 10 {
+		monthStr = "0" + monthStr
+	}
+	return dayStr + "." + monthStr + "." + yearStr
+}

@@ -18,6 +18,8 @@ type DB struct {
 	conn *pgx.Conn
 }
 
+var ErrUserNotFound = errors.New("user not found")
+
 func NewPostgressConnect(config Config) (DB, error) {
 	conn, err := pgx.Connect(context.Background(), config.DatabaseURL)
 	if err != nil {
@@ -64,4 +66,19 @@ func (db *DB) CreateUser(user models.User) error {
 		return errors.New("Can`t insert a new user:" + err.Error())
 	}
 	return nil
+}
+
+func (db *DB) GetUser(user_id int32) (models.User, error) {
+	user := models.User{}
+	// Explicitly select columns and scan into struct fields
+	err := db.conn.QueryRow(context.Background(), "SELECT id, name, surname, third_name, email, password_hash, birthdate FROM app.users WHERE id = $1", user_id).
+		Scan(&user.ID, &user.Name, &user.Surname, &user.ThirdName, &user.Email, &user.PasswordHash, &user.Birthdate)
+	if err != nil {
+		// Handle not found separately
+		if errors.Is(err, pgx.ErrNoRows) {
+			return models.User{}, ErrUserNotFound
+		}
+		return models.User{}, errors.New("Can`t get user from db:" + err.Error())
+	}
+	return user, nil
 }

@@ -1,4 +1,4 @@
-package handlers
+package api
 
 import (
 	"encoding/json"
@@ -6,21 +6,11 @@ import (
 	"time"
 
 	"github.com/voblako/TheFlowWork/internal/models"
-	"github.com/voblako/TheFlowWork/storage"
 )
 
-type HealthHandler struct {
-	DB      storage.DB
-	Started time.Time
-}
+func (s *Server) Health(w http.ResponseWriter, r *http.Request) {
 
-func NewHealthHandler(DB storage.DB, Started time.Time) *HealthHandler {
-	return &HealthHandler{DB: DB, Started: Started}
-}
-
-func (h *HealthHandler) Health(w http.ResponseWriter, r *http.Request) {
-
-	db_ver, err := h.DB.Version()
+	db_ver, err := s.DB.Version()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -29,7 +19,7 @@ func (h *HealthHandler) Health(w http.ResponseWriter, r *http.Request) {
 	jsonResp, err := json.Marshal(models.Health{
 		Status:       "Ok",
 		CurrentTime:  time.Now().UTC().String(),
-		Uptime:       time.Since(h.Started).String(),
+		Uptime:       time.Since(s.Started).String(),
 		Version:      "MVP",
 		DatabaseInfo: db_ver,
 	})

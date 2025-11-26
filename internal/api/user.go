@@ -1,15 +1,17 @@
-package handlers
+package api
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
+	"strconv"
 
 	"github.com/voblako/TheFlowWork/internal/models"
 	"github.com/voblako/TheFlowWork/storage"
 	"github.com/voblako/TheFlowWork/utils"
 )
 
-type CreateUserRequest struct {
+type UserRequest struct {
 	ID           int    `json:"id"`
 	Name         string `json:"name"`
 	Surname      string `json:"surname"`
@@ -19,16 +21,8 @@ type CreateUserRequest struct {
 	Birthdate    string `json:"birthdate"`
 }
 
-type CreateUserHandler struct {
-	DB storage.DB
-}
-
-func NewCreateUserHandler(DB storage.DB) *CreateUserHandler {
-	return &CreateUserHandler{DB: DB}
-}
-
-func (h *CreateUserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
-	userFromReq := CreateUserRequest{}
+func (s *Server) CreateUser(w http.ResponseWriter, r *http.Request) {
+	userFromReq := UserRequest{}
 	if err := json.NewDecoder(r.Body).Decode(&userFromReq); err != nil {
 		http.Error(w, "JSON Decode error: "+err.Error(), http.StatusInternalServerError)
 		return
@@ -49,7 +43,7 @@ func (h *CreateUserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 		PasswordHash: userFromReq.PasswordHash,
 		Birthdate:    t,
 	}
-	err = h.DB.CreateUser(user)
+	err = s.DB.CreateUser(user)
 	if err != nil {
 		http.Error(w, "Postgres Decode error: "+err.Error(), http.StatusInternalServerError)
 		return
@@ -63,5 +57,40 @@ func (h *CreateUserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(jsonResp)
-	return
+}
+
+func (s *Server) GetUser(w http.ResponseWriter, r *http.Request) {
+	user_id, err := strconv.ParseInt(r.PathValue("user_id"), 10, 32)
+	if err != nil {
+		http.Error(w, "User`s id is not correct: "+err.Error(), http.StatusBadRequest)
+	}
+
+	user, err := s.DB.GetUser(int32(user_id))
+	if err != nil {
+		if errors.Is(err, storage.ErrUserNotFound) {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			return
+		}
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	userResp := UserRequest{
+		ID:           user.ID,
+		Name:         user.Name,
+		Surname:      user.Surname,
+		ThirdName:    user.ThirdName,
+		Email:        user.Email,
+		PasswordHash: user.PasswordHash,
+		Birthdate:    utils.TimeToDate(user.Birthdate),
+	}
+
+	jsonResp, err := json.Marshal(userResp)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonResp)
 }

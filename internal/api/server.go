@@ -7,8 +7,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/voblako/TheFlowWork/internal/api/handlers"
-	"github.com/voblako/TheFlowWork/internal/api/middlewares"
 	"github.com/voblako/TheFlowWork/internal/config"
 	"github.com/voblako/TheFlowWork/storage"
 )
@@ -45,17 +43,15 @@ func (s *Server) Start() {
 		log.Fatal(err)
 	}
 
-	s.Started = time.Now().UTC()
-	HealthHandler := handlers.NewHealthHandler(s.DB, s.Started)
-	CreateUserHandler := handlers.NewCreateUserHandler(s.DB)
-
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("GET /health", HealthHandler.Health)
-	mux.HandleFunc("POST /user", CreateUserHandler.CreateUser)
+	mux.HandleFunc("GET /health", s.Health)
+	mux.HandleFunc("POST /user", s.CreateUser)
+	mux.HandleFunc("GET /user/{user_id}", s.GetUser)
 
-	wrappedMux := middlewares.NewLogger(mux)
+	wrappedMux := NewLogger(mux)
 
+	s.Started = time.Now().UTC()
 	server := http.Server{
 		Addr:    fmt.Sprintf(":%s", s.Config.Port),
 		Handler: wrappedMux,
