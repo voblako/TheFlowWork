@@ -1,0 +1,74 @@
+openapi: '3.0.3'
+info:
+  title: TheFlowWork
+  version: '0.1'
+servers:
+  - url: https://api.theflowwork.ru/v1
+  - url: http://localhost:3000
+paths:
+  #Служба учёта расходников
+  /supplies:
+    $ref: './paths/supplies.yml'
+  /transactions:
+    $ref: './paths/transactions.yml'
+  #Служба ведения работ
+  /faults:
+    $ref: './paths/faults.yml'
+  /actions:
+    $ref: './paths/actions.yml'
+  /actionsTypes:
+    $ref: './paths/actionsTypes.yml'
+  /solutionTemplates:
+    $ref: './paths/solutionTemplates.yml'
+  #Служба учёта оборудования
+  /equipment:
+    $ref: './paths/equipment.yml'
+  /models:
+    $ref: './paths/models.yml'
+  /workshops:
+    $ref: './paths/workshops.yml'
+  #Служба учёта сотрудников
+  /users:
+    $ref: './paths/users.yml'
+  /permissions:
+    $ref: './paths/permissions.yml'
+  #Служба ведения заявок
+  /requests:
+    $ref: './paths/requests.yml'
+  /shedule:
+    $ref: './paths/shedule.yml'
+  #Медиа
+  /media:
+    $ref: './paths/media.yml'
+
+components:
+  schemas:
+  #Служба учёта расходников
+    Supply:
+      $ref: './shemas/supplies.yml#/Supply'
+    SupplyPut:
+      $ref: './shemas/supplies.yml#/SupplyPut'
+    Transaction:
+      $ref: './shemas/transactions.yml#/Transaction'
+    TransactionCreate:
+      $ref: './shemas/transactions.yml#/TransactionCreate'
+  #Служба ведения работ
+    Actions:
+      $ref: './shemas/actions.yml#/Action'
+    ActionsPut:
+      $ref: './shemas/actions.yml#/ActionPut'
+    ActionsType:
+      $ref: './shemas/actions.yml#/ActionType'
+    ActionsTypePut:
+      $ref: './shemas/actions.yml#/ActionTypePut'
+    Fault:
+      $ref: "./shemas/faults.yml#/Fault"
+    FaultPut:
+      $ref: "./shemas/faults.yml#/FaultPut"
+    SolutionTemplate:
+      $ref: "./shemas/solutionTemplate.yml#/SolutionTemplate" 
+    SolutuionTemplatePut:
+      $ref: "./shemas/solutionTemplate.yml#/SolutionTemplatePut" 
+
+
+    

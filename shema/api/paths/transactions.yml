@@ -1,0 +1,51 @@
+get:
+  summary: История транзакций (списаний/пополнений)
+  tags: [Transactions]
+  parameters:
+    - name: supply_id
+      in: query
+      schema: { type: integer }
+    - name: action_id
+      in: query
+      schema: { type: integer }
+    - name: limit
+      in: query
+      schema: { type: integer, default: 50 }
+  responses:
+    "200":
+      description: Список транзакций
+      content:
+        application/json:
+          schema:
+            type: array
+            items: { $ref: "../shemas/transactions.yml#/Transaction" }
+
+post:
+  summary: Зафиксировать транзакцию
+  tags: [Transactions]
+  description: |
+    quantity > 0 для пополнения, quantity < 0 для списания.
+    Автоматически обновляет остаток в таблице Supplies.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema: { $ref: "../shemas/transactions.yml#/TransactionCreate" }
+  responses:
+    "201":
+      description: Транзакция создана
+      content:
+        application/json: { $ref: "../shemas/transactions.yml#/Transaction" }
+
+delete:
+  summary: Отмена транзакции
+  tags: [Transactions]
+  parametrs:
+    - name: id
+      in: query
+      shema: { type: integer }
+  responses: 
+    "204": 
+      description: Транзакция отменена
+    "404":
+      description: Транзакция ненайдена

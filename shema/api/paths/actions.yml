@@ -1,0 +1,41 @@
+get:
+  summary: История выполненных действий
+  tags: [Actions]
+  parameters:
+    - name: fault_id
+      in: query
+      schema: { type: integer }
+    - name: equipment_id
+      in: query
+      schema: { type: integer }
+  responses:
+    "200":
+      description: Список действий
+      content:
+        application/json:
+          schema:
+            type: array
+            items: { $ref: "../shemas/actions.yml#/Action" }
+
+put:
+  summary: Зафиксировать выполнение действия
+  tags: [Actions]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema: { $ref: "../shemas/actions.yml#/Action" }
+  responses:
+    "201":
+      description: Действие записано
+      content:
+        application/json: { $ref: "../shemas/actions.yml#/Action" }
+
+delete:
+  summary: Удалить действие
+  tags: [Actions]
+  responses:
+    "204": 
+      description: Действие удалено
+    "404":
+      description: Действие не найдено

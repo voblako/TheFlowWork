@@ -1,0 +1,34 @@
+get:
+  summary: Классификатор типов действий
+  tags: [ActionTypes]
+  responses:
+    "200":
+      description: Список типов действий
+      content:
+        application/json:
+          schema:
+            type: array
+            items: { $ref: "../shemas/actions.yml#/ActionType" }
+
+put:
+  summary: Создать тип действия
+  tags: [ActionTypes]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema: { $ref: "../shemas/actions.yml#/ActionTypePut" }
+  responses:
+    "200":
+      description: Тип вставлен
+      content:
+        application/json: { $ref: "../shemas/actions.yml#/ActionTypePut" }
+
+delete:
+  summary: Удалить тип действия
+  tags: [ActionTypes]
+  responses:
+    "204": 
+      description: Тип удалён 
+    "404":
+      description: Тип не найден

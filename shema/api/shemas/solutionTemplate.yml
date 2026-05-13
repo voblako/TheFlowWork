@@ -1,0 +1,28 @@
+SolutionTemplate:
+  type: object
+  properties:
+    id: { type: integer }
+    name: { type: string, example: "Замена подшипника вала А" }
+    models:
+      {
+        type: array,
+        items: { type: integer },
+        description: "ID моделей оборудования",
+      }
+    description: { type: string }
+    steps:
+      {
+        type: array,
+        items: { type: integer },
+        description: "ID типов действий (последовательность шагов)",
+      }
+  required: [id, name, models, description, steps]
+
+SolutionTemplatePut:
+  type: object
+  properties:
+    name: { type: string }
+    models: { type: array, items: { type: integer } }
+    description: { type: string }
+    steps: { type: array, items: { type: integer } }
+  required: [name, models, description, steps]

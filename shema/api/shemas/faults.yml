@@ -1,0 +1,23 @@
+Fault:
+  type: object
+  properties:
+    id: { type: integer }
+    request_id: { type: integer, description: "Ссылка на заявку" }
+    name: { type: string }
+    priority: { type: integer, minimum: 1, maximum: 5, example: 3 }
+    description: { type: string }
+    mechanic_id: { type: integer, description: "Назначенный исполнитель" }
+    created_at: { type: string, format: date-time }
+    closed_at: { type: string, format: date-time, nullable: true }
+  required:
+    [id, request_id, name, priority, description, mechanic_id, created_at]
+
+FaultPut:
+  type: object
+  properties:
+    request_id: { type: integer }
+    name: { type: string }
+    priority: { type: integer, minimum: 1, maximum: 5 }
+    description: { type: string }
+    mechanic_id: { type: integer }
+  required: [request_id, name, priority, description, mechanic_id]

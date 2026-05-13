@@ -1,0 +1,24 @@
+Transaction:
+  type: object
+  properties:
+    id: { type: integer }
+    action_id: { type: integer, description: "Связь с выполненным действием" }
+    supply_id: { type: integer, description: "Какой расходник" }
+    workshop_id: { type: integer, description: "ID помещения (склад/цех)" }
+    quantity:
+      {
+        type: integer,
+        description: "Отрицательное = списание, Положительное = пополнение",
+      }
+    time: { type: string, format: date-time }
+  required: [id, action_id, supply_id, room_id, quantity, time]
+
+TransactionCreate:
+  type: object
+  properties:
+    action_id: { type: integer }
+    supply_id: { type: integer }
+    room_id: { type: integer }
+    quantity: { type: integer }
+    time: { type: string, format: date-time }
+  required: [action_id, supply_id, room_id, quantity, time]

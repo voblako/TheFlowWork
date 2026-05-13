@@ -1,0 +1,44 @@
+get:
+  summary: Список неполадок
+  tags: [Faults]
+  parameters:
+    - name: mechanic_id
+      in: query
+      schema: { type: integer }
+    - name: status
+      in: query
+      schema: { type: string, enum: [open, in_progress, closed] }
+    - name: priority
+      in: query
+      schema: { type: integer, minimum: 1, maximum: 5 }
+  responses:
+    "200":
+      description: Список неполадок
+      content:
+        application/json:
+          schema:
+            type: array
+            items: { $ref: "../shemas/faults.yml#/Fault" }
+
+put:
+  summary: Создать неполадку на основе заявки
+  tags: [Faults]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema: { $ref: "../shemas/faults.yml#/FaultPut" }
+  responses:
+    "201":
+      description: Неполадка вставлена и назначена
+      content:
+        application/json: { $ref: "../shemas/faults.yml#/Fault" }
+
+delete:
+      summary: Удалить неполадку
+      tags: [Faults]
+      responses: 
+        '204':
+          description: Неполадка удалена
+        '404':
+          description: Неполадка не найдена

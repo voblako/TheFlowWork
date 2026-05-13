@@ -1,0 +1,45 @@
+Action:
+  type: object
+  properties:
+    id: { type: integer }
+    equipment_id: { type: integer }
+    user_id: { type: integer, description: "Кто выполнил" }
+    type_id:
+      {
+        type: integer,
+        description: "Тип действия (осмотр, замена, смазка и т.д.)",
+      }
+    fault_id: { type: integer, description: "К какой неполадке относится" }
+    comment: { type: string, nullable: true }
+    time: { type: string, format: date-time }
+  required: [id, equipment_id, user_id, type_id, fault_id, time]
+
+ActionPut:
+  type: object
+  properties:
+    equipment_id: { type: integer }
+    user_id: { type: integer }
+    type_id: { type: integer }
+    fault_id: { type: integer }
+    comment: { type: string }
+    time: { type: string, format: date-time }
+  required: [equipment_id, user_id, type_id, fault_id, time]
+
+ActionType:
+  type: object
+  properties:
+    id: { type: integer }
+    name: { type: string, example: "Смазка узлов" }
+    description:
+      {
+        type: string,
+        example: "Нанесение консистентной смазки на подвижные соединения",
+      }
+  required: [id, name, description]
+
+ActionTypePut:
+  type: object
+  properties:
+    name: { type: string }
+    description: { type: string }
+  required: [name, description]

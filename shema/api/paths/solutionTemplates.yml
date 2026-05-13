@@ -1,0 +1,37 @@
+get:
+  summary: Шаблоны решения типовых неполадок
+  tags: [SolutionTemplates]
+  parameters:
+    - name: model_id
+      in: query
+      schema: { type: integer }
+  responses:
+    "200":
+      description: Список шаблонов
+      content:
+        application/json:
+          schema:
+            type: array
+            items: { $ref: "../shemas/solutionTemplate.yml#/SolutionTemplate" }
+put:
+  summary: Создать шаблон решения
+  tags: [SolutionTemplates]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema: { $ref: "../shemas/solutionTemplate.yml#/SolutionTemplatePut" }
+  responses:
+    "201":
+      description: Шаблон создан
+      content:
+        application/json: { $ref: "../shemas/solutionTemplate.yml#/SolutionTemplate" }
+
+delete:
+  summary: Удалить шаблон
+  tags: [SolutionTemplates]
+  responses: 
+  "204":
+    description: Шаблон удалён
+  "404":
+    description: Шаблон не найден
