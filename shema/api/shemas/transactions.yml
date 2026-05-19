@@ -18,7 +18,7 @@ TransactionCreate:
   properties:
     action_id: { type: integer }
     supply_id: { type: integer }
-    room_id: { type: integer }
     quantity: { type: integer }
+    workshop_id: { type: integer }
     time: { type: string, format: date-time }
-  required: [action_id, supply_id, room_id, quantity, time]
+  required: [action_id, supply_id, quantity, time]

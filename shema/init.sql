@@ -32,7 +32,6 @@ CREATE TABLE workshops (
 CREATE TABLE equipment (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    photo TEXT NOT NULL,
     workshop_id INTEGER NOT NULL, -- идентификатор цеха
     start_date DATE NOT NULL, -- дата начала эксплуатации
     last_maintenance_date DATE NOT NULL, -- дата последнего ТО
@@ -83,7 +82,6 @@ CREATE TABLE requests (
     end_date DATE, -- работы выполнены (optional)
     request_type_id INTEGER, -- тип заявки
     problem_description TEXT NOT NULL, -- описание неполадки
-    photo TEXT, -- optional
 
     CONSTRAINT fk_request_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id),
     CONSTRAINT fk_request_request_types FOREIGN KEY (request_type_id) REFERENCES request_types(id)
@@ -94,7 +92,6 @@ CREATE TABLE faults (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    photo TEXT, -- optional
     request_id INTEGER NOT NULL, -- идентификатор заявки, к которой относится неполадка
     executor_id INTEGER NOT NULL, -- идентификатор пользователя
     created_at TIMESTAMP NOT NULL, -- дата создания
@@ -111,14 +108,22 @@ CREATE TABLE fault_solution_templates (
     solution TEXT NOT NULL
 );
 
+-- 8.1 Типы действий - справочные данные. Хранить отдельно
+CREATE TABLE action_types (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL
+);
+
 -- 8. Actions (Действия)
 CREATE TABLE actions (
     id SERIAL PRIMARY KEY,
+    type INTEGER NOT NULL, -- тип действия (ремонт, замена, ТО и т.д.)
     equipment_id INTEGER NOT NULL,
     comment TEXT NOT NULL,
     executor_id INTEGER NOT NULL, -- исполнитель (user id)
-    media TEXT, -- ссылки на внешние хранилище фото/видео (optional)
     time TIMESTAMP NOT NULL, -- время
+    CONSTRAINT fk_action_type FOREIGN KEY (type) REFERENCES action_types(id),
     CONSTRAINT fk_action_executor FOREIGN KEY (executor_id) REFERENCES users(id),
     CONSTRAINT fk_action_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id)
 );
@@ -127,21 +132,21 @@ CREATE TABLE actions (
 CREATE TABLE supplies (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    workshop INTEGER NOT NULL, -- цех
     description TEXT NOT NULL,
     quantity INTEGER NOT NULL,
-    CONSTRAINT fk_supplies_location FOREIGN KEY (workshop) REFERENCES workshops(id)
 );
 
 CREATE TABLE transactions (
     id SERIAL PRIMARY KEY,
     action_id INTEGER NOT NULL,          -- идентификатор действия
     supply_id INTEGER NOT NULL,           -- идентификатор расходника
+    workshop_id INTEGER NOT NULL,         -- идентификатор цеха, где произошло списание/пополнение
     quantity_used INTEGER NOT NULL, -- количество использованных единиц
     created_at TIMESTAMP NOT NULL, -- когда произведено списание
 
     CONSTRAINT fk_transactions_action FOREIGN KEY (action_id) REFERENCES actions(id) ON DELETE CASCADE,
     CONSTRAINT fk_transactions_supply FOREIGN KEY (supply_id) REFERENCES supplies(id) ON DELETE RESTRICT
+    CONSTRAINT fk_transactions_workshop FOREIGN KEY (workshop_id) REFERENCES workshops(id) ON DELETE RESTRICT
 );
 
 -- 10. Schedule (Расписание)
@@ -156,3 +161,14 @@ CREATE TABLE schedule (
     CONSTRAINT fk_schedule_executor FOREIGN KEY (executor_id) REFERENCES users(id),
     CONSTRAINT fk_schedule_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id)
 );
+
+CREATE TABLE media {
+    id SERIAL PRIMARY KEY,
+    entity_type VARCHAR(50) NOT NULL, -- тип сущности (например, "action", "fault", "equipment")
+    entity_id INTEGER NOT NULL, -- идентификатор сущности, к которой относится медиа
+    url TEXT NOT NULL, -- URL к медиафайлу
+    type VARCHAR(50) NOT NULL, -- тип медиа (например, "photo", "video")
+    uploaded_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- время загрузки
+    description TEXT -- описание медиа (для слепых)
+);
+}
