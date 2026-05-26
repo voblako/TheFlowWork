@@ -1,0 +1,52 @@
+post:
+  summary: создание загрузок
+  tags: [Media]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema: { $ref: "../shemas/media.yml#/Media" }
+  responses:
+    "200":
+      description: подтверждение создания ссылки
+    "404":
+      description: Действие не найдено
+
+get:
+  summary: запрос ссылок
+  tags: [Media]
+  parameters:
+    - name: link
+      in: query
+      schema: { type: string }
+    - name: entity
+      in: query
+      schema: { type: string }
+    - name: entity_id
+      in: query
+      schema: { type: string }
+
+  responses:
+    "200":
+      description:
+      schema:
+        type: array
+        items: { $ref: "../shemas/media.yml#/Media" }
+    "404":
+      description: Действие не найденоn" }
+
+delete:
+  summary: Удалить медиа
+  tags: [Media]
+  parameters:
+    - name: entity
+      in: query
+      schema: { type: string }
+    - name: entity_id
+      in: query
+      schema: { type: string }
+  responses:
+    "204":
+      description: Медиа удалено
+    "404":
+      description: Медиа не найдено

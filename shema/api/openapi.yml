@@ -68,7 +68,10 @@ components:
     SolutionTemplate:
       $ref: "./shemas/solutionTemplate.yml#/SolutionTemplate" 
     SolutuionTemplatePut:
-      $ref: "./shemas/solutionTemplate.yml#/SolutionTemplatePut" 
+      $ref: "./shemas/solutionTemplate.yml#/SolutionTemplatePut"
+  #Медиа
+    Media: 
+      $ref: "./shemas/media.yml#/Media"
 
 
     
