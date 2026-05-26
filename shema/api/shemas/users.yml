@@ -1,0 +1,31 @@
+User:
+  type: object
+  properties:
+    id: { type: integer }
+    first_name: {type: string}
+    password_hash: {type: string}
+    email: {type: string}
+    last_name: {type: string}
+    middle_name: {type: string}
+    permission_id: {type: integer}
+    workshop_id: {type: integer}
+  required: [id, equipment_id, user_id, type_id, fault_id, time]
+
+UserAuth:
+  type: object
+  properties:
+    email: {type: string}
+    password: {type: string}
+  required: [email, password]
+
+UserAdd:
+  type: object
+  properties:
+    first_name: { type: string }
+    password_hash: { type: string }
+    email: { type: string }
+    last_name: { type: string }
+    middle_name: { type: string }
+    permission_id: { type: integer }
+    workshop_id: { type: integer }
+  required: [equipment_id, user_id, type_id, fault_id, time]

@@ -1,0 +1,48 @@
+get:
+  summary: получить заявки
+  tags: [Requests]
+  responses:
+    "200":
+      description: Список заявок
+      content:
+        application/json:
+          schema:
+            type: array
+            items: { $ref: "../shemas/requests.yml#/Request" }
+
+put:
+  summary: войти
+  tags: [Users]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema: { $ref: "../shemas/users.yml#/UserAuth" }
+  responses:
+    "200":
+      description: пользователь вошел
+      content:
+        application/json: { $ref: "../shemas/users.yml#/UserAuth" }
+
+post:
+  summary: регистрация
+  tags: [Users]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema: { $ref: "../shemas/users.yml#/UserAdd" }
+  responses:
+    "200":
+      description: пользователь добавлег
+      content:
+        application/json: { $ref: "../shemas/users.yml#/UserAdd" }
+
+delete:
+  summary: Удалить пользователя
+  tags: [Users]
+  responses:
+    "204":
+      description: заявка удалена
+    "404":
+      description: заявка не найдена

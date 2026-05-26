@@ -33,11 +33,13 @@ paths:
   /permissions:
     $ref: './paths/permissions.yml'
   #Служба ведения заявок
+  /requestsTypes:
+    $ref: './paths/requestsTypes.yml'
   /requests:
     $ref: './paths/requests.yml'
   /shedule:
     $ref: './paths/shedule.yml'
-  #Медиа
+  #Медиаx`
   /media:
     $ref: './paths/media.yml'
 
@@ -68,7 +70,10 @@ components:
     SolutionTemplate:
       $ref: "./shemas/solutionTemplate.yml#/SolutionTemplate" 
     SolutuionTemplatePut:
-      $ref: "./shemas/solutionTemplate.yml#/SolutionTemplatePut" 
+      $ref: "./shemas/solutionTemplate.yml#/SolutionTemplatePut"
+  #служба заявок
+    Requests:
+      $ref: ''
 
 
     

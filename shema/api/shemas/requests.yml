@@ -1,0 +1,30 @@
+Request:
+  type: object
+  properties:
+    id: { type: integer }
+    equipment_id: { type: integer }
+    start_date: { type: string, format: date-time }
+    end_date: { type: string, format: date-time }
+    request_type_id: {type: integer}
+    problem_description: {type: string, description: "описание проблемы"}
+    photo: {type: string}
+  required: [id, equipment_id, start_date, problem_description]
+
+RequestType:
+  type: object
+  properties:
+    id: { type: integer }
+    name: { type: string, example: "ТО" }
+    description:
+      {
+        type: string,
+        example: "техническое обслуживание оборудования",
+      }
+  required: [id, name, description]
+
+RequestTypePut:
+  type: object
+  properties:
+    name: { type: string }
+    description: { type: string }
+  required: [name, description]
