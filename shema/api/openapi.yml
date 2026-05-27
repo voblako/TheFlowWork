@@ -72,6 +72,3 @@ components:
   #Медиа
     Media: 
       $ref: "./shemas/media.yml#/Media"
-
-
-    
