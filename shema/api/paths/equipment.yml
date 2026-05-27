@@ -1,96 +1,96 @@
-  get:
-    summary: Получить список оборудования
-    tags: [equipment]
-    parameters:
-      - name: id
-        in: query
-        schema:
-          type: integer
+get:
+  summary: Получить список оборудования
+  tags: [equipment]
+  parameters:
+    - name: id
+      in: query
+      schema:
+        type: integer
 
-      - name: workshop_id
-        in: query
-        schema:
-          type: integer
+    - name: workshop_id
+      in: query
+      schema:
+        type: integer
 
-      - name: name
-        in: query
-        schema:
-          type: string
+    - name: name
+      in: query
+      schema:
+        type: string
 
-    responses:
-      "200":
-        description: Список оборудования
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "../shemas/equipment.yml#/Equipment"              
-
-      "404":
-        description: Оборудование не найдено
-
-
-  post:
-    summary: Добавить оборудование
-    tags: [equipment]
-
-    requestBody:
-      required: true
+  responses:
+    "200":
+      description: Список оборудования
       content:
         application/json:
           schema:
-            $ref: "../shemas/equipment.yml#/EquipmentCreate"
+            type: array
+            items:
+              $ref: "../shemas/equipment.yml#/Equipment"              
 
-    responses:
-      "201":
-        description: Оборудование добавлено
-        content:
-          application/json:
-            schema:
-              $ref: "../shemas/equipment.yml#/Equipment"
-
-      "400":
-        description: Некорректные данные
+    "404":
+      description: Оборудование не найдено
 
 
-  put:
-    summary: Обновить информацию об оборудовании
-    tags: [equipment]
+post:
+  summary: Добавить оборудование
+  tags: [equipment]
 
-    requestBody:
-      required: true
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../shemas/equipment.yml#/EquipmentCreate"
+
+  responses:
+    "201":
+      description: Оборудование добавлено
       content:
         application/json:
           schema:
-            $ref: "../shemas/equipment.yml#/EquipmentUpdate"
+            $ref: "../shemas/equipment.yml#/Equipment"
 
-    responses:
-      "200":
-        description: Оборудование обновлено
-        content:
-          application/json:
-            schema:
-              $ref: "../shemas/equipment.yml#/Equipment"
-
-      "404":
-        description: Оборудование не найдено
+    "400":
+      description: Некорректные данные
 
 
-  delete:
-    summary: Удалить оборудование
-    tags: [equipment]
+put:
+  summary: Обновить информацию об оборудовании
+  tags: [equipment]
 
-    parameters:
-      - name: id
-        in: query
-        required: true
+  requestBody:
+    required: true
+    content:
+      application/json:
         schema:
-          type: integer
+          $ref: "../shemas/equipment.yml#/EquipmentUpdate"
 
-    responses:
-      "204":
-        description: Оборудование удалено
+  responses:
+    "200":
+      description: Оборудование обновлено
+      content:
+        application/json:
+          schema:
+            $ref: "../shemas/equipment.yml#/Equipment"
 
-      "404":
-        description: Оборудование не найдено
+    "404":
+      description: Оборудование не найдено
+
+
+delete:
+  summary: Удалить оборудование
+  tags: [equipment]
+
+  parameters:
+    - name: id
+      in: query
+      required: true
+      schema:
+        type: integer
+
+  responses:
+    "204":
+      description: Оборудование удалено
+
+    "404":
+      description: Оборудование не найдено
