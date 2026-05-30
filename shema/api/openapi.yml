@@ -73,7 +73,9 @@ components:
       $ref: "./shemas/solutionTemplate.yml#/SolutionTemplatePut"
   #служба заявок
     Requests:
-      $ref: ''
+      $ref: './shemas/requests.yml'
+    Schedules:
+      $ref: './shemas/schedules.yml'
 
 
     
