@@ -7,7 +7,6 @@ Request:
     end_date: { type: string, format: date-time }
     request_type_id: {type: integer}
     problem_description: {type: string, description: "описание проблемы"}
-    photo: {type: string}
   required: [id, equipment_id, start_date, problem_description]
 
 RequestType:

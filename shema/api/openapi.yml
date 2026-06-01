@@ -72,10 +72,12 @@ components:
     SolutuionTemplatePut:
       $ref: "./shemas/solutionTemplate.yml#/SolutionTemplatePut"
   #служба заявок
-    Requests:
-      $ref: './shemas/requests.yml'
+    Request:
+      $ref: './shemas/requests.yml#/Request'
+    RequestType:
+      $ref: './shemas/requests.yml#/RequestType'
+    RequestTypePut:
+      $ref: './shemas/requests.yml#/RequestTypePut'
     Schedules:
-      $ref: './shemas/schedules.yml'
-
-
+      $ref: './shemas/schedules.yml#/Schedule'
     

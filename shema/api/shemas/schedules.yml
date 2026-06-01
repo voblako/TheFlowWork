@@ -8,14 +8,3 @@ Schedule:
     executor_id: {type: integer}
     completed_at: { type: string, format: date-time }
   required: [id, name, priority, scheduled_time, executor_id]
-
-ScheduleTypePut:
-  type: object
-  properties:
-    name: { type: string }
-    description: { type: string }
-    priority: {type: integer}
-    scheduled_time: { type: string, format: date-time }
-    executor_id: {type: integer}
-    equipment_id: {type: integer}
-  required: [name, description, priority, scheduled_time, executor_id, equipment_id]
