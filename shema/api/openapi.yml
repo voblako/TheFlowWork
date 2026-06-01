@@ -72,3 +72,10 @@ components:
   #Медиа
     Media: 
       $ref: "./shemas/media.yml#/Media"
+  #Служба учёта оборудования  
+    Equipment:
+      $ref: "./shemas/equipment.yml#/Equipment"
+    EquipmentCreate:
+      $ref: "./shemas/equipment.yml#/EquipmentCreate"
+    EquipmentUpdate:
+      $ref: "./shemas/equipment.yml#/EquipmentUpdate"

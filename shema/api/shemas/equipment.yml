@@ -1,19 +1,30 @@
 Equipment:
   type: object
+  required:
+    - id
+    - name
+    - workshop_id
+    - start_date
+    - last_maintenance_date
+
   properties:
-    id: {type: integer}
+    id:
+      type: integer
 
-    name: {type: string}
+    name:
+      type: string
 
-    workshop_id: {type: integer}
+    workshop_id:
+      type: integer
 
     start_date:
-      {type: string,
-      format: date}
+      type: string
+      format: date
 
     last_maintenance_date:
-      {type: string,
-      format: date}
+      type: string
+      format: date
+
 
 EquipmentCreate:
   type: object
@@ -24,17 +35,19 @@ EquipmentCreate:
     - last_maintenance_date
 
   properties:
-    name: {type: string}
+    name:
+      type: string
 
-    workshop_id: {type: integer}
+    workshop_id:
+      type: integer
 
     start_date:
-      {type: string,
-      format: date}
+      type: string
+      format: date
 
     last_maintenance_date:
-      {type: string,
-      format: date}
+      type: string
+      format: date
 
 
 EquipmentUpdate:
@@ -43,16 +56,19 @@ EquipmentUpdate:
     - id
 
   properties:
-    id: {type: integer}
+    id:
+      type: integer
 
-    name: {type: string}
+    name:
+      type: string
 
-    workshop_id: {type: integer}
+    workshop_id:
+      type: integer
 
     start_date:
-      {type: string,
-      format: date}
+      type: string
+      format: date
 
     last_maintenance_date:
-      {type: string,
-      format: date}
+      type: string
+      format: date
