@@ -102,9 +102,11 @@ CREATE TABLE requests (
     end_date DATE, -- работы выполнены (optional)
     request_type_id INTEGER, -- тип заявки
     problem_description TEXT NOT NULL, -- описание неполадки
+    author_id INTEGER NOT NULL, -- автор заявки (user id)
 
     CONSTRAINT fk_request_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id),
-    CONSTRAINT fk_request_request_types FOREIGN KEY (request_type_id) REFERENCES request_types(id)
+    CONSTRAINT fk_request_request_types FOREIGN KEY (request_type_id) REFERENCES request_types(id),
+    CONSTRAINT fk_request_author FOREIGN KEY (author_id) REFERENCES users(id)
 );
 
 -- Faults (Неполадки)
