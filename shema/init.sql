@@ -68,7 +68,7 @@ CREATE TABLE schedule (
     start_time TIMESTAMP NOT NULL, --  начало смены
     end_time TIMESTAMP NOT NULL, -- конец смены
     CONSTRAINT fk_schedule_user FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT uc_schedule UNIQUE (user_id, start_time) -- уникальность расписания для одного пользователя в одно время
+    CONSTRAINT uc_schedule UNIQUE (user_id, start_time), -- уникальность расписания для одного пользователя в одно время
     CONSTRAINT chk_schedule_time CHECK (end_time > start_time) -- проверка, что время окончания больше времени начала
 );
 
