@@ -24,7 +24,7 @@ CREATE TABLE workshops (
     id SERIAL PRIMARY KEY,
     address TEXT NOT NULL, -- адрес
     workshop_type_id INTEGER NOT NULL, -- тип цеха сборочный, разгрузочный, ремонтный...
-    manager_id INTEGER -- ответсвенный
+    manager_id INTEGER, -- ответсвенный
     CONSTRAINT fk_workshop_type FOREIGN KEY (workshop_type_id) REFERENCES workshop_types(id)
 );
 
@@ -43,18 +43,8 @@ CREATE TABLE equipment (
     workshop_id INTEGER NOT NULL, -- идентификатор цеха
     start_date DATE NOT NULL, -- дата начала эксплуатации
     last_maintenance_date DATE NOT NULL, -- дата последнего ТО
-    CONSTRAINT fk_equipment_workshop FOREIGN KEY (workshop_id) REFERENCES workshops(id)
-);
-
-CREATE TABLE equipment_repair_permissions (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
-    equipment_id INTEGER NOT NULL,
-    granted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- опционально: дата выдачи права
-    granted_by INTEGER, -- опционально: кто выдал право (ссылка на users)
-    CONSTRAINT fk_erp_user FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT fk_erp_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id),
-    CONSTRAINT fk_erp_granted_by FOREIGN KEY (granted_by) REFERENCES users(id)
+    CONSTRAINT fk_equipment_workshop FOREIGN KEY (workshop_id) REFERENCES workshops(id),
+    CONSTRAINT fk_equipment_model FOREIGN KEY (model_id) REFERENCES models(id)
 );
 
 -- 4. Users (Пользователи)
@@ -69,6 +59,17 @@ CREATE TABLE users (
     workshop_id INTEGER NOT NULL, -- идентификатор цеха
     CONSTRAINT fk_users_workshop FOREIGN KEY (workshop_id) REFERENCES workshops(id),
     CONSTRAINT fk_users_permissions FOREIGN KEY (permission_id) REFERENCES permissions(id)
+);
+
+CREATE TABLE equipment_repair_permissions (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    equipment_id INTEGER NOT NULL,
+    granted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- опционально: дата выдачи права
+    granted_by INTEGER, -- опционально: кто выдал право (ссылка на users)
+    CONSTRAINT fk_erp_user FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT fk_erp_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id),
+    CONSTRAINT fk_erp_granted_by FOREIGN KEY (granted_by) REFERENCES users(id)
 );
 
 -- Добавляем внешний ключ для manager_id в таблице workshops после создания таблицы users.
@@ -104,7 +105,7 @@ CREATE TABLE faults (
     executor_id INTEGER NOT NULL, -- идентификатор пользователя
     created_at TIMESTAMP NOT NULL, -- дата создания
     closed_at TIMESTAMP, -- дата закрытия (optional)
-    CONSTRAINT fk_fault_executor FOREIGN KEY (executor_id) REFERENCES users(id)
+    CONSTRAINT fk_fault_executor FOREIGN KEY (executor_id) REFERENCES users(id),
     CONSTRAINT fk_fault_request FOREIGN KEY (request_id) REFERENCES requests(id)
 );
 
@@ -141,7 +142,7 @@ CREATE TABLE supplies (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    quantity INTEGER NOT NULL,
+    quantity INTEGER NOT NULL
 );
 
 CREATE TABLE transactions (
@@ -153,7 +154,7 @@ CREATE TABLE transactions (
     created_at TIMESTAMP NOT NULL, -- когда произведено списание
 
     CONSTRAINT fk_transactions_action FOREIGN KEY (action_id) REFERENCES actions(id) ON DELETE CASCADE,
-    CONSTRAINT fk_transactions_supply FOREIGN KEY (supply_id) REFERENCES supplies(id) ON DELETE RESTRICT
+    CONSTRAINT fk_transactions_supply FOREIGN KEY (supply_id) REFERENCES supplies(id) ON DELETE RESTRICT,
     CONSTRAINT fk_transactions_workshop FOREIGN KEY (workshop_id) REFERENCES workshops(id) ON DELETE RESTRICT
 );
 
@@ -170,7 +171,7 @@ CREATE TABLE schedule (
     CONSTRAINT fk_schedule_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id)
 );
 
-CREATE TABLE media {
+CREATE TABLE media (
     id SERIAL PRIMARY KEY,
     entity_type VARCHAR(50) NOT NULL, -- тип сущности (например, "action", "fault", "equipment")
     entity_id INTEGER NOT NULL, -- идентификатор сущности, к которой относится медиа
@@ -179,4 +180,3 @@ CREATE TABLE media {
     uploaded_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- время загрузки
     description TEXT -- описание медиа (для слепых)
 );
-}
