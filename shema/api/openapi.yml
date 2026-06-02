@@ -27,6 +27,8 @@ paths:
     $ref: './paths/models.yml'
   /workshops:
     $ref: './paths/workshops.yml'
+  /workshopsTypes:
+    $ref: './paths/workshopsTypes.yml'
   #Служба учёта сотрудников
   /users:
     $ref: './paths/users.yml'
@@ -75,7 +77,9 @@ components:
   #Служба учёта оборудования  
     Equipment:
       $ref: "./shemas/equipment.yml#/Equipment"
-    EquipmentCreate:
-      $ref: "./shemas/equipment.yml#/EquipmentCreate"
-    EquipmentUpdate:
-      $ref: "./shemas/equipment.yml#/EquipmentUpdate"
+    Model:
+      $ref: "./shemas/models.yml#/Model"
+    Workshop:
+      $ref: "./shemas/workshops.yml#/Workshop"
+    WorkshopType:
+      $ref: "./shemas/workshops.yml#/WorkshopType"

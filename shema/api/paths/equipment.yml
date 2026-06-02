@@ -2,7 +2,7 @@
 get:
   summary: Получить список оборудования
   tags:
-    - equipment
+    - Equipment
 
   parameters:
     - name: id
@@ -34,58 +34,29 @@ get:
       description: Оборудование не найдено
 
 
-post:
-  summary: Добавить оборудование
-  tags:
-    - equipment
-
-  requestBody:
-    required: true
-    content:
-      application/json:
-        schema:
-          $ref: "../shemas/equipment.yml#/EquipmentCreate"
-
-  responses:
-    "201":
-      description: Оборудование добавлено
-      content:
-        application/json:
-          schema:
-            $ref: "../shemas/equipment.yml#/Equipment"
-
-    "400":
-      description: Некорректные данные
-
-
 put:
-  summary: Обновить информацию об оборудовании
+  summary: Вставить информацию об оборудовании
   tags:
-    - equipment
+    - Equipment
 
   requestBody:
     required: true
     content:
       application/json:
         schema:
-          $ref: "../shemas/equipment.yml#/EquipmentUpdate"
+          $ref: "../shemas/equipment.yml#/Equipment"
 
   responses:
     "200":
-      description: Оборудование обновлено
-      content:
-        application/json:
-          schema:
-            $ref: "../shemas/equipment.yml#/Equipment"
-
-    "404":
-      description: Оборудование не найдено
+      description: Оборудование вставлено/обновлено
+    "500":
+      description: Внутренняя ошибка сервера
 
 
 delete:
   summary: Удалить оборудование
   tags:
-    - equipment
+    - Equipment
 
   parameters:
     - name: id

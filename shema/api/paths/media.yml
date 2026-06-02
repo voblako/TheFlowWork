@@ -28,12 +28,14 @@ get:
 
   responses:
     "200":
-      description:
-      schema:
-        type: array
-        items: { $ref: "../shemas/media.yml#/Media" }
+      description: Список ссылок
+      content:
+        application/json:
+          schema:
+            type: array
+            items: { $ref: "../shemas/media.yml#/Media" }
     "404":
-      description: Действие не найденоn" }
+      description: Действие не найдено 
 
 delete:
   summary: Удалить медиа
