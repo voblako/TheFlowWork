@@ -142,10 +142,12 @@ CREATE TABLE actions (
     equipment_id INTEGER NOT NULL,
     comment TEXT NOT NULL,
     executor_id INTEGER NOT NULL, -- исполнитель (user id)
+    fault_id INTEGER NOT NULL, -- идентификатор неполадки, к которой относится действие
     time TIMESTAMP NOT NULL, -- время
     CONSTRAINT fk_action_type FOREIGN KEY (type) REFERENCES action_types(id),
     CONSTRAINT fk_action_executor FOREIGN KEY (executor_id) REFERENCES users(id),
-    CONSTRAINT fk_action_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id)
+    CONSTRAINT fk_action_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id),
+    CONSTRAINT fk_action_fault FOREIGN KEY (fault_id) REFERENCES faults(id)
 );
 
 -- Supplies (Расходники)
