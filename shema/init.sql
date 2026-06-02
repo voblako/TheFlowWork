@@ -28,10 +28,18 @@ CREATE TABLE workshops (
     CONSTRAINT fk_workshop_type FOREIGN KEY (workshop_type_id) REFERENCES workshop_types(id)
 );
 
+-- 3.1 Типы оборудования - справочные данные. Хранить отдельно
+CREATE TABLE models (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL, -- наименование модели
+    description TEXT NOT NULL -- описание модели
+);
+
 -- 3. Equipment (Оборудование)
 CREATE TABLE equipment (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
+    model_id INTEGER NOT NULL, -- идентификатор модели
     workshop_id INTEGER NOT NULL, -- идентификатор цеха
     start_date DATE NOT NULL, -- дата начала эксплуатации
     last_maintenance_date DATE NOT NULL, -- дата последнего ТО

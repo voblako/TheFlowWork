@@ -1,0 +1,73 @@
+# Учет оборудования
+get:
+  summary: Получить список оборудования
+  tags:
+    - Equipment
+
+  parameters:
+    - name: id
+      in: query
+      schema:
+        type: integer
+
+    - name: workshop_id
+      in: query
+      schema:
+        type: integer
+
+    - name: name
+      in: query
+      schema:
+        type: string
+
+  responses:
+    "200":
+      description: Список оборудования
+      content:
+        application/json:
+          schema:
+            type: array
+            item:
+              $ref: "../shemas/equipment.yml#/Equipment"
+
+    "404":
+      description: Оборудование не найдено
+
+
+put:
+  summary: Вставить информацию об оборудовании
+  tags:
+    - Equipment
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../shemas/equipment.yml#/Equipment"
+
+  responses:
+    "200":
+      description: Оборудование вставлено/обновлено
+    "500":
+      description: Внутренняя ошибка сервера
+
+
+delete:
+  summary: Удалить оборудование
+  tags:
+    - Equipment
+
+  parameters:
+    - name: id
+      in: query
+      required: true
+      schema:
+        type: integer
+
+  responses:
+    "204":
+      description: Оборудование удалено
+
+    "404":
+      description: Оборудование не найдено

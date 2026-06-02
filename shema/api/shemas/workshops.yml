@@ -1,0 +1,20 @@
+Workshop:
+  type: object
+  properties:
+    id: { type: integer }
+    address: { type: string, example: "г.  Челябинск, Тракторозаводская, 111" }
+    workshop_type:
+      {
+        type: WorkshopType,
+        description: "Тип помещения",
+      }
+    manager_id: { type: integer, description: "ID ответственного за помещение" }
+  required: [id, address, workshop_type, manager_id]
+
+WorkshopType:
+  type: object
+  properties:
+    id: { type: integer }
+    name: { type: string, example: "Цех" }
+    description: { type: string, example: "Производственное помещение для сборки оборудования" }
+  required: [id, name, description]
