@@ -8,7 +8,7 @@ get:
         application/json:
           schema:
             type: array
-            items: { $ref: "../shemas/Access.yml#/Access" }
+            items: { $ref: "../shemas/access.yml#/Access" }
 
 put:
   summary: Создать новый доступ
@@ -17,12 +17,12 @@ put:
     required: true
     content:
       application/json:
-        schema: { $ref: "../shemas/Access.yml#/Access" }
+        schema: { $ref: "../shemas/access.yml#/Access" }
   responses:
     "200":
       description: доступ добавлен
       content:
-        application/json: { $ref: "../shemas/Access.yml#/Access" }
+        application/json: { $ref: "../shemas/access.yml#/Access" }
 
 delete:
   summary: Удалить доступ
