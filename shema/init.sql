@@ -1,4 +1,4 @@
--- 1. Permissions (Права доступа)
+-- Permissions (Права доступа)
 CREATE TABLE permissions (
     id SERIAL PRIMARY KEY,
     position VARCHAR(255) NOT NULL, -- должность
@@ -12,44 +12,42 @@ CREATE TABLE permissions (
 );
 
 
--- 2.1 Типы цехов - справочные данные. Хранить отдельно
+-- Типы цехов - справочные данные. Хранить отдельно
 CREATE TABLE workshop_types (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL
 );
 
--- 2. Workshops (Цеха)
+-- Workshops (Цеха)
 CREATE TABLE workshops (
     id SERIAL PRIMARY KEY,
     address TEXT NOT NULL, -- адрес
     workshop_type_id INTEGER NOT NULL, -- тип цеха сборочный, разгрузочный, ремонтный...
-    manager_id INTEGER -- ответсвенный
+    manager_id INTEGER, -- ответсвенный
     CONSTRAINT fk_workshop_type FOREIGN KEY (workshop_type_id) REFERENCES workshop_types(id)
 );
 
--- 3. Equipment (Оборудование)
+-- Типы оборудования - справочные данные. Хранить отдельно
+CREATE TABLE models (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL, -- наименование модели
+    description TEXT NOT NULL -- описание модели
+);
+
+-- Equipment (Оборудование)
 CREATE TABLE equipment (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
+    model_id INTEGER NOT NULL, -- идентификатор модели
     workshop_id INTEGER NOT NULL, -- идентификатор цеха
     start_date DATE NOT NULL, -- дата начала эксплуатации
     last_maintenance_date DATE NOT NULL, -- дата последнего ТО
-    CONSTRAINT fk_equipment_workshop FOREIGN KEY (workshop_id) REFERENCES workshops(id)
+    CONSTRAINT fk_equipment_workshop FOREIGN KEY (workshop_id) REFERENCES workshops(id),
+    CONSTRAINT fk_equipment_model FOREIGN KEY (model_id) REFERENCES models(id)
 );
 
-CREATE TABLE equipment_repair_permissions (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
-    equipment_id INTEGER NOT NULL,
-    granted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- опционально: дата выдачи права
-    granted_by INTEGER, -- опционально: кто выдал право (ссылка на users)
-    CONSTRAINT fk_erp_user FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT fk_erp_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id),
-    CONSTRAINT fk_erp_granted_by FOREIGN KEY (granted_by) REFERENCES users(id)
-);
-
--- 4. Users (Пользователи)
+-- Users (Пользователи)
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     first_name VARCHAR(255) NOT NULL, -- имя
@@ -63,6 +61,28 @@ CREATE TABLE users (
     CONSTRAINT fk_users_permissions FOREIGN KEY (permission_id) REFERENCES permissions(id)
 );
 
+-- Schedule (Расписание  смен)
+CREATE TABLE schedule (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL, -- исполнитель (user id)
+    start_time TIMESTAMP NOT NULL, --  начало смены
+    end_time TIMESTAMP NOT NULL, -- конец смены
+    CONSTRAINT fk_schedule_user FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT uc_schedule UNIQUE (user_id, start_time), -- уникальность расписания для одного пользователя в одно время
+    CONSTRAINT chk_schedule_time CHECK (end_time > start_time) -- проверка, что время окончания больше времени начала
+);
+
+CREATE TABLE equipment_repair_permissions (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    equipment_id INTEGER NOT NULL,
+    granted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- опционально: дата выдачи права
+    granted_by INTEGER, -- опционально: кто выдал право (ссылка на users)
+    CONSTRAINT fk_erp_user FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT fk_erp_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id),
+    CONSTRAINT fk_erp_granted_by FOREIGN KEY (granted_by) REFERENCES users(id)
+);
+
 -- Добавляем внешний ключ для manager_id в таблице workshops после создания таблицы users.
 ALTER TABLE workshops 
 ADD CONSTRAINT fk_workshop_manager FOREIGN KEY (manager_id) REFERENCES users(id);
@@ -74,7 +94,7 @@ CREATE TABLE request_types (
     description TEXT -- описание под тип, что означает
 );
 
--- 5. Requests/Tickets (Заявка)
+-- Requests/Tickets (Заявка)
 CREATE TABLE requests (
     id SERIAL PRIMARY KEY,
     equipment_id INTEGER NOT NULL, -- идентификатор оборудования
@@ -82,12 +102,14 @@ CREATE TABLE requests (
     end_date DATE, -- работы выполнены (optional)
     request_type_id INTEGER, -- тип заявки
     problem_description TEXT NOT NULL, -- описание неполадки
+    author_id INTEGER NOT NULL, -- автор заявки (user id)
 
     CONSTRAINT fk_request_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id),
-    CONSTRAINT fk_request_request_types FOREIGN KEY (request_type_id) REFERENCES request_types(id)
+    CONSTRAINT fk_request_request_types FOREIGN KEY (request_type_id) REFERENCES request_types(id),
+    CONSTRAINT fk_request_author FOREIGN KEY (author_id) REFERENCES users(id)
 );
 
--- 6. Faults (Неполадки)
+-- Faults (Неполадки)
 CREATE TABLE faults (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -96,11 +118,11 @@ CREATE TABLE faults (
     executor_id INTEGER NOT NULL, -- идентификатор пользователя
     created_at TIMESTAMP NOT NULL, -- дата создания
     closed_at TIMESTAMP, -- дата закрытия (optional)
-    CONSTRAINT fk_fault_executor FOREIGN KEY (executor_id) REFERENCES users(id)
+    CONSTRAINT fk_fault_executor FOREIGN KEY (executor_id) REFERENCES users(id),
     CONSTRAINT fk_fault_request FOREIGN KEY (request_id) REFERENCES requests(id)
 );
 
--- 7. Fault Solution Templates (Шаблоны решения неполадок)
+-- Fault Solution Templates (Шаблоны решения неполадок)
 CREATE TABLE fault_solution_templates (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -108,32 +130,34 @@ CREATE TABLE fault_solution_templates (
     solution TEXT NOT NULL
 );
 
--- 8.1 Типы действий - справочные данные. Хранить отдельно
+-- Типы действий - справочные данные. Хранить отдельно
 CREATE TABLE action_types (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL
 );
 
--- 8. Actions (Действия)
+-- Actions (Действия)
 CREATE TABLE actions (
     id SERIAL PRIMARY KEY,
     type INTEGER NOT NULL, -- тип действия (ремонт, замена, ТО и т.д.)
     equipment_id INTEGER NOT NULL,
     comment TEXT NOT NULL,
     executor_id INTEGER NOT NULL, -- исполнитель (user id)
+    fault_id INTEGER NOT NULL, -- идентификатор неполадки, к которой относится действие
     time TIMESTAMP NOT NULL, -- время
     CONSTRAINT fk_action_type FOREIGN KEY (type) REFERENCES action_types(id),
     CONSTRAINT fk_action_executor FOREIGN KEY (executor_id) REFERENCES users(id),
-    CONSTRAINT fk_action_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id)
+    CONSTRAINT fk_action_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id),
+    CONSTRAINT fk_action_fault FOREIGN KEY (fault_id) REFERENCES faults(id)
 );
 
--- 9. Supplies (Расходники)
+-- Supplies (Расходники)
 CREATE TABLE supplies (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    quantity INTEGER NOT NULL,
+    quantity INTEGER NOT NULL
 );
 
 CREATE TABLE transactions (
@@ -145,24 +169,11 @@ CREATE TABLE transactions (
     created_at TIMESTAMP NOT NULL, -- когда произведено списание
 
     CONSTRAINT fk_transactions_action FOREIGN KEY (action_id) REFERENCES actions(id) ON DELETE CASCADE,
-    CONSTRAINT fk_transactions_supply FOREIGN KEY (supply_id) REFERENCES supplies(id) ON DELETE RESTRICT
+    CONSTRAINT fk_transactions_supply FOREIGN KEY (supply_id) REFERENCES supplies(id) ON DELETE RESTRICT,
     CONSTRAINT fk_transactions_workshop FOREIGN KEY (workshop_id) REFERENCES workshops(id) ON DELETE RESTRICT
 );
 
--- 10. Schedule (Расписание)
-CREATE TABLE schedule (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    priority INTEGER NOT NULL,
-    scheduled_time TIMESTAMP NOT NULL, -- время
-    executor_id INTEGER NOT NULL, -- исполнитель (user id)
-    equipment_id INTEGER NOT NULL, -- оборудование
-    completed_at TIMESTAMP, -- когда исполнено (в начале пустое, заполняется после исполнении)
-    CONSTRAINT fk_schedule_executor FOREIGN KEY (executor_id) REFERENCES users(id),
-    CONSTRAINT fk_schedule_equipment FOREIGN KEY (equipment_id) REFERENCES equipment(id)
-);
-
-CREATE TABLE media {
+CREATE TABLE media (
     id SERIAL PRIMARY KEY,
     entity_type VARCHAR(50) NOT NULL, -- тип сущности (например, "action", "fault", "equipment")
     entity_id INTEGER NOT NULL, -- идентификатор сущности, к которой относится медиа
@@ -171,4 +182,3 @@ CREATE TABLE media {
     uploaded_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- время загрузки
     description TEXT -- описание медиа (для слепых)
 );
-}

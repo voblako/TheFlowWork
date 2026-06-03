@@ -1,0 +1,62 @@
+# Учет помещений
+get:
+  summary: Получить список помещений
+  tags:
+    -  Workshop
+
+  parameters:
+    - name: name
+      in: query
+      schema:
+        type: string
+  responses:
+    "200":
+      description: Список помещений
+      content:
+        application/json:
+          schema:
+            type: array
+            item:
+              $ref: "../shemas/workshops.yml#/Workshop"
+
+    "404":
+      description: Помещение(я) не найдено(ы)
+
+
+put:
+  summary:  Вставить информацию о помещении
+  tags:
+    - Workshop
+
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../shemas/workshops.yml#/Workshop"
+
+  responses:
+    "200":
+      description: Помещение обновлено
+    "500":
+      description: Внутренняя ошибка сервера
+
+
+delete:
+  summary: Удалить помещение
+  tags:
+    - Workshop
+
+  parameters:
+    - name: id
+      in: query
+      required: true
+      schema:
+        type: integer
+
+  responses:
+    "204":
+      description: Помещение удалено
+
+    "404":
+      description: Помещение не найдено

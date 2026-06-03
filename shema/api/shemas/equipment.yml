@@ -1,0 +1,29 @@
+Equipment:
+  type: object
+  required:
+    - id
+    - name
+    - workshop_id
+    - start_date
+    - last_maintenance_date
+
+  properties:
+    id:
+      type: integer
+
+    name:
+      type: string
+
+    model_id:
+      type: integer
+
+    workshop_id:
+      type: integer
+
+    start_date:
+      type: string
+      format: date
+
+    last_maintenance_date:
+      type: string
+      format: date

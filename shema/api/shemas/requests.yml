@@ -7,7 +7,8 @@ Request:
     end_date: { type: string, format: date-time }
     request_type_id: {type: integer}
     problem_description: {type: string, description: "описание проблемы"}
-  required: [id, equipment_id, start_date, problem_description]
+    author_id: {type: integer}
+  required: [id, equipment_id, start_date, problem_description, author_id]
 
 RequestType:
   type: object

@@ -1,0 +1,32 @@
+get:
+  summary: Классификатор типов помещений
+  tags: [WorkshopTypes]
+  responses:
+    "200":
+      description: Список типов помещений
+      content:
+        application/json:
+          schema:
+            type: array
+            items: { $ref: "../shemas/workshops.yml#/WorkshopType" }
+
+put:
+  summary: Создать тип помещения
+  tags: [WorkshopTypes]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema: { $ref: "../shemas/workshops.yml#/WorkshopType" }
+  responses:
+    "200":
+      description: Тип вставлен
+
+delete:
+  summary: Удалить тип помещения
+  tags: [WorkshopTypes]
+  responses:
+    "204": 
+      description: Тип удалён 
+    "404":
+      description: Тип не найден

@@ -1,0 +1,15 @@
+Media:
+  type: object
+  properties:
+    id: { type: integer }
+    entity_type: { type: string }
+    entity_id: { type: integer }
+    type:
+      {
+        type: string,
+        description: "тип медиа (например, photo, video)",
+      }
+    url: { type: string, description: "URL к медиафайлу" }
+    description: { type: string, nullable: true }
+    uploaded_at: { type: string, format: date-time }
+  required: [id, entity_type, entity_id, url, type]

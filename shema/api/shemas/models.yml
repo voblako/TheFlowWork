@@ -1,0 +1,7 @@
+Model:
+    type: object
+    properties:
+        id: { type: integer }
+        name: { type: string, example: "Станок 1" }
+        description: { type: string, example: "Токарный станок для обработки валов" }
+    required: [id, name, description]
