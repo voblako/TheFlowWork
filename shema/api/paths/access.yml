@@ -1,0 +1,34 @@
+get:
+  summary: Посмотреть права доступа
+  tags: [Access]
+  responses:
+    "200":
+      description: вывод всех ролей доступа
+      content:
+        application/json:
+          schema:
+            type: array
+            items: { $ref: "../shemas/Access.yml#/Access" }
+
+put:
+  summary: Создать новый доступ
+  tags: [Access]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema: { $ref: "../shemas/Access.yml#/Access" }
+  responses:
+    "200":
+      description: доступ добавлен
+      content:
+        application/json: { $ref: "../shemas/Access.yml#/Access" }
+
+delete:
+  summary: Удалить доступ
+  tags: [Access]
+  responses:
+    "204":
+      description: доступ удален
+    "404":
+      description: доступ не найден

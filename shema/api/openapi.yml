@@ -46,6 +46,8 @@ paths:
   #Медиаx`
   /media:
     $ref: './paths/media.yml'
+  /Access:
+    $ref: '/paths/access.yml'
 
 components:
   schemas:
@@ -83,6 +85,9 @@ components:
     RequestTypePut:
       $ref: './shemas/requests.yml#/RequestTypePut'
     Schedules:
+      $ref: './shemas/schedules.yml'
+    Access:
+      $ref: './shemas/Access.yml'
       $ref: './shemas/schedules.yml#/Schedule'
   #Служба учёта сотрудников
     User:
