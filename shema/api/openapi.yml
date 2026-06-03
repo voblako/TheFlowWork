@@ -27,11 +27,15 @@ paths:
     $ref: './paths/models.yml'
   /workshops:
     $ref: './paths/workshops.yml'
+  /workshopsTypes:
+    $ref: './paths/workshopsTypes.yml'
   #Служба учёта сотрудников
   /users:
     $ref: './paths/users.yml'
   /permissions:
     $ref: './paths/permissions.yml'
+  #/equipmentRepairPermissions:
+  #  $ref: './paths/equipmentRepairPermissions.yml'
   #Служба ведения заявок
   /requestsTypes:
     $ref: './paths/requestsTypes.yml'
@@ -84,3 +88,23 @@ components:
       $ref: './shemas/schedules.yml'
     Access:
       $ref: './shemas/Access.yml'
+      $ref: './shemas/schedules.yml#/Schedule'
+  #Служба учёта сотрудников
+    User:
+      $ref: "./shemas/users.yml#/User"
+    #Permission:
+    #  $ref: "./shemas/permissions.yml#/Permission"
+    #EquipmentRepairPermission:
+    #  $ref: "./shemas/permissions.yml#/EquipmentRepairPermission"
+  #Медиа
+    Media: 
+      $ref: "./shemas/media.yml#/Media"
+  #Служба учёта оборудования  
+    Equipment:
+      $ref: "./shemas/equipment.yml#/Equipment"
+    Model:
+      $ref: "./shemas/models.yml#/Model"
+    Workshop:
+      $ref: "./shemas/workshops.yml#/Workshop"
+    WorkshopType:
+      $ref: "./shemas/workshops.yml#/WorkshopType"

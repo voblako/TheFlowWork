@@ -1,6 +1,24 @@
 get:
   summary: Расписание смен
   tags: [Schedules]
+  parameters:
+    - in: query
+      name: user_id
+      schema:
+        type: integer
+      description: ID пользователя для фильтрации расписания по исполнителю
+    - in: query
+      name: start_time
+      schema:
+        type: string
+        format: date-time
+      description: Начало временного диапазона для фильтрации расписания
+    - in: query
+      name: end_time
+      schema:
+        type: string
+        format: date-time
+      description: Конец временного диапазона для фильтрации расписания
   responses:
     "200":
       description: расписание смен
