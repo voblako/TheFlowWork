@@ -88,7 +88,6 @@ components:
       $ref: './shemas/schedules.yml'
     Access:
       $ref: './shemas/Access.yml'
-      $ref: './shemas/schedules.yml#/Schedule'
   #Служба учёта сотрудников
     User:
       $ref: "./shemas/users.yml#/User"
