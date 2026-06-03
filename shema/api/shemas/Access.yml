@@ -3,11 +3,11 @@ Access:
   properties:
     id: { type: integer }
     role: {type: string}
-    access_env: {type: bool}
-    access_schedule: {type: bool}
-    access_create_problem: {type: bool}
-    access_consumables: {type: bool}
-    access_template: {type: bool}
-    access_history: {type: bool}
-    access_change_workshop: {type: bool}
+    access_env: {type: boolean}
+    access_schedule: {type: boolean}
+    access_create_problem: {type: boolean}
+    access_consumables: {type: boolean}
+    access_template: {type: boolean}
+    access_history: {type: boolean}
+    access_change_workshop: {type: boolean}
   required: [id, role, access_env, access_schedule, access_create_problem, access_consumables, access_template, access_history, access_change_workshop]
