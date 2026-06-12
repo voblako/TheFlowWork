@@ -11,10 +11,18 @@ services:
     ports:
       - "5432:5432"
 
-  adminer:
-    image: adminer
+
+  drizzle:
+    image: ghcr.io/drizzle-team/gateway:1.2.0
+    environment:
+      PORT: "4983"
+      STORE_PATH: "/app"
+      MASTERPASS: "qwerty"
     ports:
-      - 8080:8080
+      - "4983:4983"
+    volumes:
+      - drizzle-data:/app
 
 volumes:
   pgdata:
+  drizzle-data:
